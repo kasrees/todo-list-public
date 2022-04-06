@@ -1,0 +1,40 @@
+<div class="main">
+  <div class="btn-wrapper">
+    <button
+      class="btn btn-menu"
+      [class.active]="filter == 'all'"
+      (click)="filter = 'all'">
+      All
+    </button>
+  
+    <button
+      class="btn btn-menu"
+      [class.active]="filter == 'active'"
+      (click)="filter = 'active'">
+      Active
+    </button>
+  
+    <button
+      class="btn btn-menu"
+      [class.active]="filter == 'complete'"
+      (click)="filter = 'complete'">
+      Complete
+    </button>
+  </div>
+  
+  <div>
+    <h3>Tasks</h3>
+    <app-item
+    *ngFor="let task of getTasks()"
+    [task]=task
+    (onCompleteItem)="onComplete($event)"
+    (onDeleteItem)="onDelete($event)"></app-item>
+  </div>
+  
+  <div>
+    <form #taskForm="ngForm">
+      <input class="lg-text-input" ngModel name="title" type="text" placeholder="title">
+      <button class="btn-primary" (click)="addTask(taskForm)">Add task</button>
+    </form>
+  </div>
+</div>

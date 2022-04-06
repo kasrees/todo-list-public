@@ -1,0 +1,10 @@
+<div class="item">
+    <hr>
+    <ul>
+        <li>{{task.title}}</li>
+    </ul>
+    <div class="btn-wrapper">
+        <button class="btn btn-save" *ngIf="!task.isDone" (click)="complete()">Complete</button>
+        <button class="btn btn-warn" (click)="delete()">Delete</button>
+    </div>
+</div>
