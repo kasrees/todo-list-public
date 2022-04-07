@@ -34,7 +34,7 @@ namespace To_Do_List_Backend.Services
             _todoRepository.Delete( new Todo { Id = todoId } );
         }
 
-        public Todo GetTodo( int todoId )
+        public Todo? GetTodo( int todoId )
         {
             Todo? todo = _todoRepository.Get( todoId );
             if ( todo == null )
