@@ -20,9 +20,9 @@ namespace To_Do_List_Backend.Repositories
                 connection.Open();
                 using ( var command = connection.CreateCommand() )
                 {
-                    command.CommandText = @"INSERT INTO [dbo].[todo]([title], [is_done]) VALUES (@title, @is_done)";
+                    command.CommandText = @"INSERT INTO [dbo].[Todo] ([Title], [IsDone]) VALUES (@title, @isDone)";
                     command.Parameters.Add( "@title", SqlDbType.NVarChar ).Value = todo.Title;
-                    command.Parameters.Add( "@lastName", SqlDbType.Bit ).Value = todo.IsDone;
+                    command.Parameters.Add( "@isDone", SqlDbType.Bit ).Value = todo.IsDone;
 
                     return command.ExecuteNonQuery();
                 }
@@ -36,8 +36,8 @@ namespace To_Do_List_Backend.Repositories
                 connection.Open();
                 using ( var command = connection.CreateCommand() )
                 {
-                    command.CommandText = @"DELETE FROM [dbo].[todo] WHERE [id_todo] = @id_todo";
-                    command.Parameters.Add( "@id_todo", SqlDbType.Int ).Value = todo.Id;
+                    command.CommandText = @"DELETE FROM [dbo].[Todo] WHERE [Id] = @id";
+                    command.Parameters.Add( "@id", SqlDbType.Int ).Value = todo.Id;
 
                     command.ExecuteNonQuery();
                 }
@@ -51,8 +51,8 @@ namespace To_Do_List_Backend.Repositories
                 connection.Open();
                 using ( SqlCommand command = connection.CreateCommand() )
                 {
-                    command.CommandText = @"SELECT [id_todo], [titile], [is_done] FROM [dbo].[todo] WHERE [id_todo] = @id_todo";
-                    command.Parameters.Add( "@id_todo", SqlDbType.Int ).Value = id;
+                    command.CommandText = @"SELECT [Id], [Title], [IsDone] FROM [dbo].[Todo] WHERE [Id] = @id";
+                    command.Parameters.Add( "@id", SqlDbType.Int ).Value = id;
 
                     using ( var reader = command.ExecuteReader() )
                     {
@@ -83,7 +83,7 @@ namespace To_Do_List_Backend.Repositories
                 connection.Open();
                 using ( var command = connection.CreateCommand() )
                 {
-                    command.CommandText = @"SELECT [id_todo], [title], [is_done] FROM [dbo].[todo]";
+                    command.CommandText = @"SELECT [Id], [Title], [IsDone] FROM [dbo].[Todo]";
 
                     using ( var reader = command.ExecuteReader() )
                     {
@@ -110,10 +110,10 @@ namespace To_Do_List_Backend.Repositories
                 connection.Open();
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = @"UPDATE [dbo].[todo] SET [titile] = @title, [is_done] = @is_done WHERE [id_todo] = @id_todo";
-                    command.Parameters.Add("@id_todo", SqlDbType.Int).Value = todo.Id;
+                    command.CommandText = @"UPDATE [dbo].[Todo] SET [Title] = @title, [IsDone] = @isDone WHERE [Id] = @id";
+                    command.Parameters.Add("@id", SqlDbType.Int).Value = todo.Id;
                     command.Parameters.Add("@title", SqlDbType.NVarChar).Value = todo.Title;
-                    command.Parameters.Add("@is_done", SqlDbType.Bit).Value = todo.IsDone;
+                    command.Parameters.Add("@isDone", SqlDbType.Bit).Value = todo.IsDone;
 
                     return command.ExecuteNonQuery();
                 }

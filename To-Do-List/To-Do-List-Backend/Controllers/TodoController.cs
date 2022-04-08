@@ -46,7 +46,7 @@ namespace To_Do_List_Backend.Controllers
         public IActionResult CreateTodo( [FromBody] TodoDto todoDto )
         {
             _todoService.CreateTodo( todoDto );
-            return Ok();
+            return Ok("Todo was created");
         }
 
         [HttpPut]
@@ -58,7 +58,7 @@ namespace To_Do_List_Backend.Controllers
             {
                 return NotFound();
             }
-            return Ok();
+            return Ok("Todo was updated");
         }
 
         [HttpDelete]
@@ -66,7 +66,7 @@ namespace To_Do_List_Backend.Controllers
         public IActionResult DeleteTodo( int todoId )
         {
             _todoService.DeleteTodo( todoId );
-            return Ok();
+            return Ok("Todo was deleted");
         }
     }
 }

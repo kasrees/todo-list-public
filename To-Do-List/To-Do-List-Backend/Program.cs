@@ -16,7 +16,8 @@ builder.Services.AddCors( options =>
 
 builder.Services.AddControllers();
 //Тут добавить сервис IToDoService в DI
-builder.Services.AddScoped<ITodoRepository, TodoRowSqlRepository>();
+builder.Services.AddScoped<ITodoRepository, TodoRowSqlRepository>( x => new TodoRowSqlRepository( builder.Configuration.GetConnectionString( "DefaultConnection" ) ) );
+builder.Services.AddScoped<ITodoService, TodoService>();
 
 var app = builder.Build();
 app.MapControllers();
