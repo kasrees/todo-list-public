@@ -15,12 +15,24 @@ builder.Services.AddCors( options =>
 } );
 
 builder.Services.AddControllers();
+builder.Services.AddSwaggerGen( c =>
+{
+    c.SwaggerDoc( "v1", new() { Title = "TodoApi", Version = "v1" } );
+} );
+
 //Тут добавить сервис IToDoService в DI
 builder.Services.AddScoped<ITodoRepository, TodoRowSqlRepository>( x => new TodoRowSqlRepository( builder.Configuration.GetConnectionString( "DefaultConnection" ) ) );
 builder.Services.AddScoped<ITodoService, TodoService>();
 
+
 var app = builder.Build();
 app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI( options =>
+{
+    options.SwaggerEndpoint( "/swagger/v1/swagger.json", "v1" );
+    options.RoutePrefix = string.Empty;
+} );
 app.UseCors( builder =>
 {
     builder

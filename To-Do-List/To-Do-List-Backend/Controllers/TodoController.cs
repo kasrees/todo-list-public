@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using To_Do_List_Backend.Domain;
 using To_Do_List_Backend.Dto;
@@ -19,46 +20,51 @@ namespace To_Do_List_Backend.Controllers
 
         [HttpGet]
         [Route( "get-all" )]
-        public ActionResult<List<Todo>> GetAll()
+        public ActionResult<List<TodoDto>> GetAll()
         {
             List<Todo> todos = _todoService.GetTodos();
             if ( todos.Count == 0 )
             {
-                return NotFound();
+                return NoContent();
             }
-            return Ok( _todoService.GetTodos() );
+
+            return Ok( todos.Select( x => x.ToTodoDto() ) );
         }
 
         [HttpGet]
         [Route( "{todoId}" )]
-        public ActionResult<Todo> GetTodo( int todoId )
+        public ActionResult<TodoDto> GetTodo( int todoId )
         {
             Todo? todo = _todoService.GetTodo( todoId );
             if ( todo == null )
             {
                 return NotFound();
             }
-            return todo;
+            return Ok( todo.ToTodoDto() );
         }
 
         [HttpPost]
         [Route( "create" )]
-        public IActionResult CreateTodo( [FromBody] TodoDto todoDto )
+        public ActionResult<TodoDto> CreateTodo( [FromBody] TodoDto todoDto )
         {
-            _todoService.CreateTodo( todoDto );
-            return Ok("Todo was created");
+            Todo? createdTodo = _todoService.CreateTodo( todoDto );
+            if ( createdTodo == null )
+            {
+                return BadRequest();
+            }
+            return Ok( createdTodo.ToTodoDto() );
         }
 
         [HttpPut]
         [Route( "{todoId}/complete" )]
-        public IActionResult CompleteTodo( int todoId )
+        public ActionResult<TodoDto> CompleteTodo( int todoId )
         {
-            int rowAffected = _todoService.CompleteTodo( todoId );
-            if ( rowAffected == 0 )
+            Todo? comletedTodo = _todoService.CompleteTodo( todoId );
+            if ( comletedTodo == null )
             {
                 return NotFound();
             }
-            return Ok("Todo was updated");
+            return Ok( comletedTodo );
         }
 
         [HttpDelete]
@@ -66,7 +72,7 @@ namespace To_Do_List_Backend.Controllers
         public IActionResult DeleteTodo( int todoId )
         {
             _todoService.DeleteTodo( todoId );
-            return Ok("Todo was deleted");
+            return NoContent();
         }
     }
 }

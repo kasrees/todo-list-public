@@ -7,8 +7,8 @@ namespace To_Do_List_Backend.Services
     {
         List<Todo> GetTodos();
         Todo? GetTodo( int todoId );
-        int CompleteTodo( int todoId );
-        void CreateTodo( TodoDto todo );
+        Todo? CompleteTodo( int todoId );
+        Todo? CreateTodo( TodoDto todo );
         void DeleteTodo( int todoId );
     }
 }

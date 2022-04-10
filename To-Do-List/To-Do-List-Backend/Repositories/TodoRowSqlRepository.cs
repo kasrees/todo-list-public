@@ -20,11 +20,11 @@ namespace To_Do_List_Backend.Repositories
                 connection.Open();
                 using ( var command = connection.CreateCommand() )
                 {
-                    command.CommandText = @"INSERT INTO [dbo].[Todo] ([Title], [IsDone]) VALUES (@title, @isDone)";
+                    command.CommandText = @"INSERT INTO [dbo].[Todo] ([Title], [IsDone]) VALUES (@title, @isDone); SELECT SCOPE_IDENTITY();";
                     command.Parameters.Add( "@title", SqlDbType.NVarChar ).Value = todo.Title;
                     command.Parameters.Add( "@isDone", SqlDbType.Bit ).Value = todo.IsDone;
 
-                    return command.ExecuteNonQuery();
+                    return Convert.ToInt32( command.ExecuteScalar() );
                 }
             }
         }
@@ -105,17 +105,18 @@ namespace To_Do_List_Backend.Repositories
 
         public int Update( Todo todo )
         {
-            using (var connection = new SqlConnection(_connectionString))
+            using ( var connection = new SqlConnection( _connectionString ) )
             {
                 connection.Open();
-                using (var command = connection.CreateCommand())
+                using ( var command = connection.CreateCommand() )
                 {
                     command.CommandText = @"UPDATE [dbo].[Todo] SET [Title] = @title, [IsDone] = @isDone WHERE [Id] = @id";
-                    command.Parameters.Add("@id", SqlDbType.Int).Value = todo.Id;
-                    command.Parameters.Add("@title", SqlDbType.NVarChar).Value = todo.Title;
-                    command.Parameters.Add("@isDone", SqlDbType.Bit).Value = todo.IsDone;
+                    command.Parameters.Add( "@id", SqlDbType.Int ).Value = todo.Id;
+                    command.Parameters.Add( "@title", SqlDbType.NVarChar ).Value = todo.Title;
+                    command.Parameters.Add( "@isDone", SqlDbType.Bit ).Value = todo.IsDone;
 
-                    return command.ExecuteNonQuery();
+                    command.ExecuteNonQuery();
+                    return todo.Id;
                 }
             }
         }

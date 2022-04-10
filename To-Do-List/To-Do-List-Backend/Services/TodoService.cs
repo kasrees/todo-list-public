@@ -13,20 +13,24 @@ namespace To_Do_List_Backend.Services
             _todoRepository = todoRepository;
         }
 
-        public int CompleteTodo( int todoId )
+        public Todo? CompleteTodo( int todoId )
         {
             Todo? todo = _todoRepository.Get( todoId );
+
             if ( todo == null )
             {
-                return 0;
+                return null;
             }
             todo.IsDone = true;
-            return _todoRepository.Update( todo );
+            _todoRepository.Update( todo );
+
+            return todo;
         }
 
-        public void CreateTodo( TodoDto todo )
+        public Todo? CreateTodo( TodoDto todo )
         {
-            _todoRepository.Create( todo.ToTodo() );
+            int todoId = _todoRepository.Create( todo.ToTodo() );
+            return GetTodo( todoId );
         }
 
         public void DeleteTodo( int todoId )
